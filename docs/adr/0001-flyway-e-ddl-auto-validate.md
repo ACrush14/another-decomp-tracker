@@ -1,7 +1,7 @@
-# 0001.Flyway e ddl-alto validate
+# 0001.Flyway e ddl-auto validate
 
 ## Contexto
 
 ## Decisão
 
-## Consequencias
+## Consequências
