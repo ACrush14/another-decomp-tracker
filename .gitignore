@@ -1,0 +1,9 @@
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.env
+*.z64
+*.n64
+*.v64
+*.rom

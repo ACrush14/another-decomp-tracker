@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: backend
+  datasource:
+    url: jdbc:postgresql://localhost:5433/decomptracker
+    username: dev
+    password: dev
+  jpa:
+    hibernate:
+      ddl-auto: validate
