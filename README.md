@@ -69,8 +69,8 @@ Em desenvolvimento inicial.
 
 - [x] Esqueleto Spring Boot e PostgreSQL via Docker Compose
 - [x] Migration inicial (`project` e `snapshot`) aplicada pelo Flyway
-- [ ] Entidades JPA e repositories
-- [ ] Testes de persistência (salvar/ler um snapshot e violar a unicidade)
+- [x] Entidades JPA e repositories
+- [x] Testes de persistência (salvar/ler um snapshot e violar a unicidade)
 - [ ] Definição da fonte do número de progresso de cada decompilação
 - [ ] ETL: extração, transformação e carga
 - [ ] API REST da série histórica
