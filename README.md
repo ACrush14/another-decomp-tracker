@@ -54,6 +54,12 @@ Definido em `V1__create_tables.sql`:
 - `project`: nome (único) e URL do repositório.
 - `snapshot`: um registro por commit de um projeto, com data do commit, funções reconstruídas e total de funções. A restrição `UNIQUE (project_id, commit_sha)` impede gravar o mesmo commit duas vezes para o mesmo projeto, base da idempotência do ETL.
 
+## Sobre os dados de progresso
+
+Os repositórios de decompilação investigados não publicam um número oficial de progresso por commit. O Super Mario 64 foi publicado já completo, e o Kirby 64 não tem uma contagem oficial na branch principal.
+
+O valor do Kirby 64 (cerca de 60%, medido em bytes) vem da mensagem de um commit de um PR aberto e não mesclado (PR #61), em 26/08/2026. É um valor **aproximado e não verificado**, e por isso não é gravado na tabela `snapshot`. O raciocínio completo está no [ADR 0002](docs/adr/0002-fonte-do-progresso.md).
+
 ## Estrutura
 
 ```
@@ -71,7 +77,7 @@ Em desenvolvimento inicial.
 - [x] Migration inicial (`project` e `snapshot`) aplicada pelo Flyway
 - [x] Entidades JPA e repositories
 - [x] Testes de persistência (salvar/ler um snapshot e violar a unicidade)
-- [ ] Definição da fonte do número de progresso de cada decompilação
+- [x] Definição da fonte do número de progresso (ver [ADR 0002](docs/adr/0002-fonte-do-progresso.md))
 - [ ] ETL: extração, transformação e carga
 - [ ] API REST da série histórica
 - [ ] Front-end React + TypeScript
