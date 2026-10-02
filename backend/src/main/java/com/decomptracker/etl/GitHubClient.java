@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestClient;
 import java.util.ArrayList;
-
+import org.springframework.stereotype.Component;
+@Component
 public class GitHubClient {
 
     private static final int PAGE_SIZE = 100;
