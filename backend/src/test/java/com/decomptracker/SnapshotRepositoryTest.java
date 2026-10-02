@@ -1,11 +1,13 @@
 package com.decomptracker;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+
 import java.time.Instant;
 import com.decomptracker.model.Project;
 
@@ -37,5 +39,17 @@ class SnapshotRepositoryTest {
         assertEquals(snapshot.getCommitSha(), lido.getCommitSha());
         assertEquals(10, lido.getMatchedFunctions());
         assertEquals(100, lido.getTotalFunctions());
+    }
+
+    @Test 
+    void naoPermiteDoisSnapshotsDoMesmoCommitNoMesmoProjeto() {
+        Project project = projectRepository.save(new Project("projeto-unico!", "https://github.com/exemplo/repo2"));
+
+        String sha = "b".repeat(40);
+
+        snapshotRepository.saveAndFlush(new Snapshot(project, sha, Instant.now(), 10, 100));
+
+        assertThrows(DataIntegrityViolationException.class, ()->
+    snapshotRepository.saveAndFlush(new Snapshot(project, sha, Instant.now(), 20, 100)));
     }
 }
