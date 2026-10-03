@@ -84,7 +84,7 @@ public class Game {
     
 
     public void update(String repoUrl, String status, BigDecimal progressPercent,
-                        String progressMetric, Integer matchedFunction, Integer totalFunctions,
+                        String progressMetric, Integer matchedFunctions, Integer totalFunctions,
                         String progressNote, String sourceUrl, LocalDate checkedOn) {
                             this.repoUrl = repoUrl;
                                     this.status = status;
