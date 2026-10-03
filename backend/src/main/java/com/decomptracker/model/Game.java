@@ -82,4 +82,18 @@ public class Game {
     public String getSourceUrl() { return sourceUrl; }
     public LocalDate getCheckedOn() { return checkedOn; }
     
+
+    public void update(String repoUrl, String status, BigDecimal progressPercent,
+                        String progressMetric, Integer matchedFunction, Integer totalFunctions,
+                        String progressNote, String sourceUrl, LocalDate checkedOn) {
+                            this.repoUrl = repoUrl;
+                                    this.status = status;
+        this.progressPercent = progressPercent;
+        this.progressMetric = progressMetric;
+        this.matchedFunctions = matchedFunctions;
+        this.totalFunctions = totalFunctions;
+        this.progressNote = progressNote;
+        this.sourceUrl = sourceUrl;
+        this.checkedOn = checkedOn;
+    }
 }
