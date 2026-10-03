@@ -34,6 +34,26 @@ Status labels: *complete* and *in progress* follow what each repository says abo
 
 The remaining games will be added as they are verified. The game list used as the base of the catalog comes from Wikipedia (CC BY-SA license): [List of Nintendo 64 games](https://en.wikipedia.org/wiki/List_of_Nintendo_64_games) and [List of best-selling Nintendo 64 video games](https://en.wikipedia.org/wiki/List_of_best-selling_Nintendo_64_video_games).
 
+## Game catalog API
+
+The table above is also stored in the `game` table and served by the API:
+
+```
+GET /games
+GET /games?status=inactive
+```
+
+`status` is optional and accepts `complete`, `in_progress`, `inactive` or `unknown`. Without it, all games are returned.
+
+The data comes from [`backend/src/main/resources/catalog/n64-decomp-progress.csv`](backend/src/main/resources/catalog/n64-decomp-progress.csv). To load it into the database, start the application with the loader switched on (it is off by default):
+
+```bash
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--decomp.catalog.load-on-startup=true
+```
+
+The load is an upsert by title, so running it again does not duplicate anything.
+
 ## Commits per month
 
 After importing a project's commits, the API returns its commits-per-month series:
@@ -113,6 +133,7 @@ Defined in the Flyway migrations:
 - `project` (V1): unique name and repository URL.
 - `snapshot` (V1): one record per commit of a project, with commit date, reconstructed functions and total functions. Reserved for when per-commit progress exists; currently unused.
 - `repo_commit` (V2): one record per commit extracted from GitHub (hash and date). The `UNIQUE (project_id, commit_sha)` constraint prevents the same commit from being stored twice for the same project, which is the basis of the ETL's idempotency.
+- `game` (V3, fixed by V4): the N64 game catalog. One record per game, with repository URL, status (`complete`, `in_progress`, `inactive` or `unknown`), progress percent, `progress_metric` (what that percent measures), optional function counts, a note, the source URL and the date it was checked. Fields the source does not state stay `NULL`.
 
 ## About the progress data
 
@@ -140,6 +161,7 @@ Early development.
 - [x] Decision on the source of the progress number (see [ADR 0002](docs/adr/0002-fonte-do-progresso.md))
 - [x] ETL: commit extraction (GitHub API) and idempotent load into `repo_commit` (migration V2)
 - [x] REST API: `GET /projects/{name}/commits-per-month`
-- [ ] N64 game catalog: which games have a decompilation repository and the progress of each
+- [x] N64 game catalog: `game` table, CSV loader and `GET /games?status=` (15 games so far)
+- [ ] Grow the catalog with more games from the Wikipedia lists
 - [ ] Import other repositories (Kirby 64 and others)
 - [ ] React + TypeScript front-end
