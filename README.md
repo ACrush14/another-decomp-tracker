@@ -2,12 +2,12 @@
 
 Serviço que acompanha o progresso de projetos de **decompilação de jogos de N64**.
 
-A ideia é ingerir o histórico de commits de repositórios de decompilação, calcular quantas funções já foram reconstruídas em cada commit (funções reconstruídas / total) e expor essa série histórica por uma API REST. Um front-end em React + TypeScript para visualizar a evolução está previsto, mas fora do escopo por enquanto.
+A ideia é ingerir o histórico de commits de repositórios de decompilação, guardá-lo no PostgreSQL e expor séries históricas por uma API REST (hoje, commits por mês). Um catálogo dos jogos de N64 com o progresso de cada decompilação está em construção, e um front-end em React + TypeScript está previsto, mas fora do escopo por enquanto.
 
 A ingestão é um ETL:
 
-1. **Extract:** busca os commits na API do GitHub.
-2. **Transform:** calcula o progresso de cada commit.
+1. **Extract:** busca os commits na API do GitHub, com paginação.
+2. **Transform:** converte a resposta da API em registros simples (hash e data do commit). O cálculo de progresso por commit foi adiado, porque os repositórios não publicam esse número (ver [ADR 0002](docs/adr/0002-fonte-do-progresso.md)).
 3. **Load:** grava no PostgreSQL, de forma idempotente (rodar duas vezes não duplica dados).
 
 > Este repositório **não contém ROMs, assets nem código da Nintendo**, e o `.gitignore` bloqueia as extensões mais comuns de ROM.
@@ -49,10 +49,51 @@ O banco usa `dev` / `dev`, definidos em `docker-compose.yml` e em `backend/src/m
 
 ## Modelo de dados
 
-Definido em `V1__create_tables.sql`:
+Definido nas migrations do Flyway:
 
-- `project`: nome (único) e URL do repositório.
-- `snapshot`: um registro por commit de um projeto, com data do commit, funções reconstruídas e total de funções. A restrição `UNIQUE (project_id, commit_sha)` impede gravar o mesmo commit duas vezes para o mesmo projeto, base da idempotência do ETL.
+- `project` (V1): nome (único) e URL do repositório.
+- `snapshot` (V1): um registro por commit de um projeto, com data do commit, funções reconstruídas e total de funções. Reservada para quando houver progresso por commit; hoje não é usada.
+- `repo_commit` (V2): um registro por commit extraído do GitHub (hash e data). A restrição `UNIQUE (project_id, commit_sha)` impede gravar o mesmo commit duas vezes para o mesmo projeto, base da idempotência do ETL.
+
+## Progresso das decompilações
+
+Os valores abaixo são **aproximados** e mostram a fonte de cada um. Eles não vêm de um número oficial por commit, e por isso não são calculados pelo ETL (ver [ADR 0002](docs/adr/0002-fonte-do-progresso.md)).
+
+| Jogo | Repositório | Progresso | Fonte e observação | Consultado em |
+|---|---|---|---|---|
+| Super Mario 64 | [n64decomp/sm64](https://github.com/n64decomp/sm64) | Completa (100%) | O README do repositório descreve uma decompilação completa das versões JP, US, EU, Shindou e iQue | 02/10/2026 |
+| Kirby 64: The Crystal Shards | [Kirby64Ret/kirby64](https://github.com/Kirby64Ret/kirby64) | ~60%, medido em bytes | Mensagem de commit do PR #61 (aberto, não mesclado). **Não verificado** | 02/10/2026 |
+
+Os demais jogos serão acrescentados conforme forem verificados. A lista de jogos usada como base do catálogo vem da Wikipedia (licença CC BY-SA): [List of Nintendo 64 games](https://en.wikipedia.org/wiki/List_of_Nintendo_64_games) e [List of best-selling Nintendo 64 video games](https://en.wikipedia.org/wiki/List_of_best-selling_Nintendo_64_video_games).
+
+## Commits por mês
+
+Depois de importar os commits de um projeto, a API devolve a série de commits por mês:
+
+```
+GET /projects/{nome}/commits-per-month
+```
+
+Exemplo de resposta para o Super Mario 64 (30 commits, de 2019-08 a 2023-08), com os primeiros itens:
+
+```json
+[
+  {"month": "2019-08", "commits": 4},
+  {"month": "2019-09", "commits": 1},
+  {"month": "2019-10", "commits": 3}
+]
+```
+
+Para um projeto que não existe, a resposta é `404`.
+
+Para importar os commits do Super Mario 64, suba a aplicação com a importação ligada (por padrão ela fica desligada):
+
+```bash
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--decomp.import.on-startup=true
+```
+
+Rodar de novo não duplica nada.
 
 ## Sobre os dados de progresso
 
@@ -78,6 +119,8 @@ Em desenvolvimento inicial.
 - [x] Entidades JPA e repositories
 - [x] Testes de persistência (salvar/ler um snapshot e violar a unicidade)
 - [x] Definição da fonte do número de progresso (ver [ADR 0002](docs/adr/0002-fonte-do-progresso.md))
-- [ ] ETL: extração, transformação e carga
-- [ ] API REST da série histórica
+- [x] ETL: extração dos commits (API do GitHub) e carga idempotente em `repo_commit` (migration V2)
+- [x] API REST: `GET /projects/{nome}/commits-per-month`
+- [ ] Catálogo dos jogos de N64: quais têm repositório de decompilação e o progresso de cada um
+- [ ] Importar outros repositórios (Kirby 64 e demais)
 - [ ] Front-end React + TypeScript
