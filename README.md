@@ -16,6 +16,12 @@ The values below are **approximate** and list their source. They do not come fro
 |---|---|---|---|---|
 | Super Mario 64 | [n64decomp/sm64](https://github.com/n64decomp/sm64) | Complete (100%) | The repository README describes a full decompilation of the JP, US, EU, Shindou and iQue releases | 2026-10-02 |
 | Kirby 64: The Crystal Shards | [Kirby64Ret/kirby64](https://github.com/Kirby64Ret/kirby64) | ~60%, measured in bytes | Commit message of PR #61 (open, not merged). **Not verified** | 2026-10-02 |
+| Aidyn Chronicles: The First Mage | [blackgamma7/Aidyn](https://github.com/blackgamma7/Aidyn) | In progress (amount unknown) | The README says the repository holds pseudocode, symbol tables and headers, not usable code. No progress number is published | 2026-10-03 |
+| Banjo-Kazooie | [n64decomp/banjo-kazooie](https://github.com/n64decomp/banjo-kazooie) | Complete (100%) | The README heading shows 100.0000% with a progress badge. Covers US v1.0, US v1.1, JP and PAL. GitHub mirror of a GitLab primary repository | 2026-10-03 |
+| Blast Corps | [retroplastic/blastcorps](https://github.com/retroplastic/blastcorps) | Inactive since 2021-12 (amount unknown) | The README says naming and documentation are in progress and publishes no progress number. Last commit: 2021-12-28. "Inactive" is **inferred** from the commit history, not declared by the authors | 2026-10-03 |
+| Body Harvest | [jaytheham/body-harvest-decompilation](https://github.com/jaytheham/body-harvest-decompilation) | In progress: 46.8% of functions matched (1,264 of 2,703); 62.3% decompiled, counting non-matching ones | The project's own [`docs/progress.json`](https://github.com/jaytheham/body-harvest-decompilation/blob/master/docs/progress.json), generated 2026-04-16, which also keeps a weekly history from 2026-02-01. The repository has had commits since then (latest 2026-10-03), so the figures may be out of date | 2026-10-03 |
+
+Status labels: *complete* and *in progress* follow what each repository says about itself. *Inactive* means there have been no recent commits; it is **inferred from the commit history**, not declared by the authors.
 
 The remaining games will be added as they are verified. The game list used as the base of the catalog comes from Wikipedia (CC BY-SA license): [List of Nintendo 64 games](https://en.wikipedia.org/wiki/List_of_Nintendo_64_games) and [List of best-selling Nintendo 64 video games](https://en.wikipedia.org/wiki/List_of_best-selling_Nintendo_64_video_games).
 
