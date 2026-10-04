@@ -2,17 +2,19 @@ package com.decomptracker.web;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.decomptracker.model.Game;
 import com.decomptracker.repository.GameRepository;
 
-
-@RestController 
+@RestController
 public class GameController {
+
     private final GameRepository gameRepository;
 
     public GameController(GameRepository gameRepository) {
@@ -26,5 +28,12 @@ public class GameController {
                 : gameRepository.findByStatus(status);
 
         return games.stream().map(GameResponse::from).toList();
+    }
+
+    @GetMapping("/games/{id}")
+    public GameResponse get(@PathVariable Long id) {
+        return gameRepository.findById(id)
+                .map(GameResponse::from)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
