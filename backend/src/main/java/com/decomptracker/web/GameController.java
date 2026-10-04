@@ -20,10 +20,11 @@ public class GameController {
     }
 
     @GetMapping("/games")
-    public List<Game> list(@RequestParam(required = false) String status) {
-        if (status == null) {
-            return gameRepository.findAll();
-        }
-        return gameRepository.findByStatus(status);
+    public List<GameResponse> list(@RequestParam(required = false) String status) {
+        List<Game> games = (status == null)
+                ? gameRepository.findAll()
+                : gameRepository.findByStatus(status);
+
+        return games.stream().map(GameResponse::from).toList();
     }
 }
