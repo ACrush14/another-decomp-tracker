@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchGames } from "./api";
 import { GameCard } from "./GameCard";
+import "./App.css";
 import type { Game } from "./game";
 
 function App() {
