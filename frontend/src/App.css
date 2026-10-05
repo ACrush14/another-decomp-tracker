@@ -60,3 +60,16 @@
 .status-unknown {
   color: var(--inactive);
 }
+
+.notice {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.notice a {
+  color: var(--text-strong);
+}

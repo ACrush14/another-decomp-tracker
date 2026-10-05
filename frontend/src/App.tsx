@@ -1,22 +1,38 @@
 import { useEffect, useState } from "react";
-import { fetchGames } from "./api";
+import { fetchCatalog, type Catalog } from "./api";
 import { GameCard } from "./GameCard";
 import "./App.css";
-import type { Game } from "./game";
+
+const REPO_URL = "https://github.com/ACrush14/another-decomp-tracker";
 
 function App() {
-  const [games, setGames] = useState<Game[]>([]);
+  const [catalog, setCatalog] = useState<Catalog | null>(null);
 
   useEffect(() => {
-    fetchGames().then(setGames);
+    fetchCatalog().then(setCatalog);
   }, []);
+
+  if (catalog === null) {
+    return (
+      <main>
+        <h1>decomp-tracker</h1>
+        <p>Carregando catálogo...</p>
+      </main>
+    );
+  }
 
   return (
     <main>
       <h1>decomp-tracker</h1>
-      <p>{games.length} jogos no catálogo</p>
+      <p>{catalog.games.length} jogos no catálogo</p>
+      {catalog.source === "snapshot" && (
+        <p className="notice">
+          Backend offline: exibindo uma cópia estática do catálogo. O código está no{" "}
+          <a href={REPO_URL}>GitHub</a>.
+        </p>
+      )}
       <section className="game-grid">
-        {games.map((game) => (
+        {catalog.games.map((game) => (
           <GameCard key={game.id} game={game}></GameCard>
         ))}
       </section>
