@@ -36,6 +36,10 @@ function App() {
           <GameCard key={game.id} game={game}></GameCard>
         ))}
       </section>
+      <footer className="authorship">
+        Cerca de 80% do código foi escrito à mão por Anderson de Lima. A configuração de deploy e o
+        plano B estático do catálogo foram preparados com o Claude.
+      </footer>
     </main>
   );
 }

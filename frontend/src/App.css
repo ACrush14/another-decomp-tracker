@@ -73,3 +73,9 @@
 .notice a {
   color: var(--text-strong);
 }
+
+.authorship {
+  margin-top: 32px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}

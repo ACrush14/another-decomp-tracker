@@ -8,6 +8,10 @@ Ele ingere o histórico de commits de repositórios de decompilação, guarda no
 
 > Este repositório **não contém ROMs, assets nem código da Nintendo**, e o `.gitignore` bloqueia as extensões mais comuns de ROM.
 
+> **Autoria:** cerca de 80% do código deste projeto foi escrito à mão por Anderson de Lima. A configuração de deploy (Dockerfile, workflow de CI, variáveis de ambiente, guia de deploy) e o plano B estático do catálogo no front-end foram preparados com o Claude.
+
+Front-end no ar: [another-decomp-tracker.vercel.app](https://another-decomp-tracker.vercel.app). O back-end ainda não está publicado, então a página mostra uma cópia estática do catálogo.
+
 ## Progresso das decompilações de N64
 
 Os valores abaixo são **aproximados** e mostram a fonte de cada um. Eles não vêm de um número oficial por commit, e por isso não são calculados pelo ETL (ver [ADR 0002](docs/adr/0002-fonte-do-progresso.md)).
