@@ -4,7 +4,7 @@
 
 A service that tracks the progress of **Nintendo 64 game decompilation projects**.
 
-It ingests the commit history of decompilation repositories, stores it in PostgreSQL and exposes historical series through a REST API (today: commits per month). A catalog of N64 games with the progress of each decompilation is under construction, and a React + TypeScript front-end is planned but out of scope for now.
+It ingests the commit history of decompilation repositories, stores it in PostgreSQL and exposes historical series through a REST API (today: commits per month). It also serves a catalog of N64 games with the progress of each decompilation (`GET /games`), shown by a React + TypeScript front-end.
 
 > This repository **contains no ROMs, assets or Nintendo code**, and `.gitignore` blocks the most common ROM extensions.
 
@@ -196,4 +196,4 @@ Early development.
 - [x] N64 game catalog: `game` table, CSV loader and `GET /games?status=` (15 games so far)
 - [ ] Grow the catalog with more games from the Wikipedia lists
 - [ ] Import other repositories (Kirby 64 and others)
-- [ ] React + TypeScript front-end
+- [x] React + TypeScript front-end (deployed on Vercel; the back-end is not deployed yet)
